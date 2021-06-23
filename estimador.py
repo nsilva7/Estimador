@@ -12,11 +12,12 @@ from tensorflow.keras.callbacks import EarlyStopping
 from sklearn.metrics import mean_squared_error,mean_absolute_error
 
 #se lee el dataset
-df=pd.read_csv("data/simulador_dataset.csv")
-
+df= pd.read_csv("data/70.csv",sep=";")
+df_test= pd.read_csv("data/30.csv",sep=";")
 #df.info()
 
-df = df.drop(columns=['slots','sumSlots','sumBlockedSlots'])
+df = df.drop(columns=['time','blocked','slots','sumSlots','sumBlockedSlots'])
+df_test = df_test.drop(columns=['time','blocked','slots','sumSlots','sumBlockedSlots'])
 
 plt.figure(figsize=(8, 4))
 sns.distplot(df['ratio'])
@@ -52,11 +53,17 @@ plt.show()
 X = df.drop(columns=['ratio'])
 y = df['ratio']
 
-labelEncoder_blocked = LabelEncoder()
-X.iloc[:,5] = labelEncoder_blocked.fit_transform(X.iloc[:,5])
+# labelEncoder_blocked = LabelEncoder()
+# X.iloc[:,5] = labelEncoder_blocked.fit_transform(X.iloc[:,5])
 
 
-X_train, X_test, y_train, y_test = train_test_split(X,y,test_size=0.3,random_state=42)
+#X_train, X_test, y_train, y_test = train_test_split(X,y,test_size=0.3,random_state=42)
+
+X_train = X
+y_train = y
+
+X_test = df_test.drop(columns=['ratio'])
+y_test = df_test['ratio'];
 
 #Escalado
 
@@ -66,10 +73,10 @@ X_test = scaler.transform(X_test)
 
 #Creacion del modelo
 model = Sequential()
-model.add(Dense(6,activation='relu'))
-model.add(Dropout(0.2))
-model.add(Dense(6,activation='relu'))
-model.add(Dropout(0.2))
+# model.add(Dense(4,activation='relu'))
+# model.add(Dropout(0.5))
+model.add(Dense(8,input_dim=4,activation='relu'))
+model.add(Dropout(0.5))
 model.add(Dense(1))
 model.compile(optimizer='adam', loss='mse')
 
@@ -92,3 +99,8 @@ print("Mean Absolute Error: " + str(mae))
 mse = np.sqrt(mean_squared_error(y_test,predictions))
 print("Mean Squared Error: " + str(mse))
 
+f = open("data/model/model.json", "w")
+f.write(model.to_json())
+f.close()
+
+model.save("data/model")
