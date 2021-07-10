@@ -7,30 +7,41 @@ import mysql.connector as msql
 from mysql.connector import Error
 try:
     conn = msql.connect(host='localhost', user='root',
-                        password='123456')#give ur username, password
+                        password='admin')#give ur username, password
     if conn.is_connected():
         cursor = conn.cursor()
-        cursor.execute("CREATE DATABASE IF NOT EXISTS Simulador_dataset")
+        cursor.execute("CREATE DATABASE IF NOT EXISTS simulador_dataset")
         print("Database is created")
-        cursor.execute("USE Simulador_dataset")
-        cursor.execute("CREATE TABLE IF NOT EXISTS data( time int(10) DEFAULT NULL,entropy decimal(10,6) DEFAULT NULL,path_consecutiveness decimal(10,6) DEFAULT NULL,bfr decimal(10,6) DEFAULT NULL,msi decimal(10,6) DEFAULT NULL,slots int(11) DEFAULT NULL,blocked varchar(20) DEFAULT NULL,sumSlots int(11) DEFAULT NULL,sumBlockedSlots int(11) DEFAULT NULL,ratio decimal(10,6) DEFAULT NULL)")
+        cursor.execute("USE simulador_dataset")
+        cursor.execute("CREATE TABLE IF NOT EXISTS dataset4( "
+                       "entropy decimal(10,6) DEFAULT NULL,"
+                       "pc decimal(10,6) DEFAULT NULL,"
+                       "bfr decimal(10,6) DEFAULT NULL,"
+                       "shf decimal(10,6) DEFAULT  NULL,"
+                       "msi decimal(10,6) DEFAULT NULL,"
+                       "used decimal(10,6) DEFAULT NULL,"
+                       "blocked tinyint(1)  DEFAULT NULL,"
+                       "ratio decimal(10,6) DEFAULT NULL)"
+                       )
         print("Table is created")
 
-        directory = r'C:\Users\nicoa\OneDrive\Documentos\simulador'
+        directory = r'C:\Users\USUARIO\Documents\jose\documentos tesis\data'
+        c = 93035
         for filename in os.listdir(directory):
+            print(filename)
             if filename.endswith(".csv"):
                 # importacion de dataset
-                print("se importa: " + os.path.join(directory, filename))
+                print("Se importa: " + os.path.join(directory, filename))
                 dataset = pd.read_csv(os.path.join(directory, filename), index_col=False, delimiter=',')
                 dataset.head()
-
                 for i, row in dataset.iterrows():
                     # here %S means string values
-                    sql = "INSERT INTO Simulador_dataset.data VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+                    sql = "INSERT INTO Simulador_dataset.dataset4 VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"
                     cursor.execute(sql, tuple(row))
-                    print("Record inserted")
+                    print(str(c) + " - Record inserted")
                     # the connection is not auto committed by default, so we must commit to save our changes
                     conn.commit()
+                    c = c - 1
             else:
                 continue
 
