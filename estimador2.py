@@ -10,8 +10,8 @@ from tensorflow.keras.layers import Dropout
 #train_dataset = pd.read_csv("data/70.csv", sep=";")
 #test_dataset = pd.read_csv("data/30.csv", sep=";")
 
-dataset = pd.read_csv("data/bfr.csv", sep=";")
-dataset = dataset.drop(columns=["ratio"])
+dataset = pd.read_csv("data/dt.csv", sep=";")
+dataset = dataset.drop(columns=["pc"])
 
 train_dataset = dataset.sample(frac=0.8,random_state=0)
 test_dataset = dataset.drop(train_dataset.index)
@@ -20,16 +20,16 @@ test_dataset = dataset.drop(train_dataset.index)
 #test_dataset = test_dataset.drop(columns=[ 'pc', 'msi'])
 
 plt.figure(figsize=(8, 4))
-sns.pairplot(train_dataset[["entropy", "pc", "bfr", "shf", "msi", "used", "blocked"]], diag_kind="kde")
+sns.pairplot(train_dataset[["entropy", "bfr", "shf", "msi", "used", "demandsq", "lockss"]], diag_kind="kde")
 plt.show()
 
 train_stats = train_dataset.describe()
-train_stats.pop("bfr")
+train_stats.pop("ratio")
 train_stats = train_stats.transpose()
 
 
-train_labels = train_dataset.pop('bfr')
-test_labels = test_dataset.pop('bfr')
+train_labels = train_dataset.pop('ratio')
+test_labels = test_dataset.pop('ratio')
 
 
 def norm(x):
@@ -45,8 +45,10 @@ normed_test_data = norm(test_dataset)
 
 def build_model():
     model = keras.Sequential([
-        layers.Dense(16, activation='relu', input_shape=[len(train_dataset.keys())]),
-        #layers.Dense(16, activation='relu'),
+        layers.Dense(64, activation='relu', input_shape=[len(train_dataset.keys())]),
+        layers.Dense(32, activation='relu'),
+        layers.Dense(32, activation='relu'),
+        layers.Dense(64, activation='relu'),
         layers.Dense(1)
     ])
 
@@ -96,7 +98,7 @@ early_stop = keras.callbacks.EarlyStopping(monitor='val_loss', patience=10)
 history = model.fit(normed_train_data, train_labels, epochs=EPOCHS,
                     validation_split = 0.2, verbose=0, callbacks=[early_stop, PrintDot()])
 
-plot_history(history)
+#plot_history(history)
 
 loss, mae, mse = model.evaluate(normed_test_data, test_labels, verbose=2)
 
@@ -123,19 +125,19 @@ plt.show()
 
 stats = {"mean": {
     "entropy": train_stats["mean"]["entropy"],
-    "pc": train_stats["mean"]["pc"],
+    #"pc": train_stats["mean"]["pc"],
     "shf": train_stats["mean"]["shf"],
     "msi": train_stats["mean"]["msi"],
     "used": train_stats["mean"]["used"],
-    "blocked": train_stats["mean"]["blocked"]
+    #"blocked": train_stats["mean"]["blocked"]
 },
 "std":{
     "entropy": train_stats["std"]["entropy"],
-    "pc": train_stats["std"]["pc"],
+    #"pc": train_stats["std"]["pc"],
     "shf": train_stats["std"]["shf"],
     "msi": train_stats["std"]["msi"],
     "used": train_stats["std"]["used"],
-    "blocked": train_stats["std"]["blocked"]
+    #"blocked": train_stats["std"]["blocked"]
 }}
 
 

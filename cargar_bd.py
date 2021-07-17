@@ -13,20 +13,21 @@ try:
         cursor.execute("CREATE DATABASE IF NOT EXISTS simulador_dataset")
         print("Database is created")
         cursor.execute("USE simulador_dataset")
-        cursor.execute("CREATE TABLE IF NOT EXISTS dataset4( "
+        cursor.execute("CREATE TABLE IF NOT EXISTS dataset6( "
                        "entropy decimal(10,6) DEFAULT NULL,"
                        "pc decimal(10,6) DEFAULT NULL,"
                        "bfr decimal(10,6) DEFAULT NULL,"
                        "shf decimal(10,6) DEFAULT  NULL,"
                        "msi decimal(10,6) DEFAULT NULL,"
                        "used decimal(10,6) DEFAULT NULL,"
-                       "blocked tinyint(1)  DEFAULT NULL,"
+                       "demandsq int(12) DEFAULT NULL,"
+                       "locks int(12)  DEFAULT NULL,"
                        "ratio decimal(10,6) DEFAULT NULL)"
                        )
         print("Table is created")
 
         directory = r'C:\Users\USUARIO\Documents\jose\documentos tesis\data'
-        c = 93035
+        c = 23939
         for filename in os.listdir(directory):
             print(filename)
             if filename.endswith(".csv"):
@@ -36,7 +37,7 @@ try:
                 dataset.head()
                 for i, row in dataset.iterrows():
                     # here %S means string values
-                    sql = "INSERT INTO Simulador_dataset.dataset4 VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"
+                    sql = "INSERT INTO Simulador_dataset.dataset6 VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)"
                     cursor.execute(sql, tuple(row))
                     print(str(c) + " - Record inserted")
                     # the connection is not auto committed by default, so we must commit to save our changes
