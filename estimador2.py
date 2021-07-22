@@ -15,6 +15,7 @@ from tensorflow.keras.layers import Dropout
 
 dataset = pd.read_csv("data/datos.csv")
 data = []
+print("--Calculando ratios--")
 for index, row in dataset.iterrows():
     if(row["time"] <= 1000 ):
         demandasTotales = 0
@@ -30,7 +31,8 @@ for index, row in dataset.iterrows():
         data.append([int(row["time"]),row["entropy"],row["pc"], row["bfr"],row["shf"],row["msi"],row["used"],demandasBloqueadas,ratio])
 
 newDataset = pd.DataFrame(data,columns=["time","entropy","pc","bfr","shf","msi","used","blocked","ratio"])
-
+data_0 = 0
+data_0_ratio = []
 data_01 = 0
 data_01_ratio = []
 data_12 = 0
@@ -51,11 +53,19 @@ data_89 = 0
 data_89_ratio = []
 data_9 = 0
 data_9_ratio = []
+data_1 = 0
+data_1_ratio = []
 
 dataset = []
 lim = 1000
+print("--Seteando datos--")
 for index, row in newDataset.iterrows():
-    if(row["ratio"] >= 0 and row["ratio"] < 0.1 and data_01 < lim and row["ratio"] not in data_01_ratio):
+    if (row["ratio"] == 0 and data_0 < lim):
+        data_0_ratio.append(row["ratio"])
+        data_0 += 1
+        dataset.append([int(row["time"]), row["entropy"], row["pc"], row["bfr"], row["shf"], row["msi"], row["used"],
+                        row["blocked"], row["ratio"]]);
+    if(row["ratio"] > 0 and row["ratio"] < 0.1 and data_01 < lim and row["ratio"] not in data_01_ratio):
         data_01_ratio.append(row["ratio"])
         data_01 += 1
         dataset.append([int(row["time"]),row["entropy"],row["pc"], row["bfr"],row["shf"],row["msi"],row["used"],row["blocked"],row["ratio"]]);
@@ -91,23 +101,90 @@ for index, row in newDataset.iterrows():
         data_89_ratio.append(row["ratio"])
         data_89 += 1
         dataset.append([int(row["time"]),row["entropy"],row["pc"], row["bfr"],row["shf"],row["msi"],row["used"],row["blocked"],row["ratio"]]);
-    if (row["ratio"] >= 0.9 and data_9 < lim and row["ratio"] not in data_9_ratio):
+    if (row["ratio"] >= 0.9 and row["ratio"] < 1 and data_9 < lim and row["ratio"] not in data_9_ratio):
         data_9_ratio.append(row["ratio"])
         data_9 += 1
         dataset.append([int(row["time"]),row["entropy"],row["pc"], row["bfr"],row["shf"],row["msi"],row["used"],row["blocked"],row["ratio"]]);
+    if (row["ratio"] == 1 and data_1 < lim and row["ratio"] not in data_1_ratio):
+        data_1_ratio.append(row["ratio"])
+        data_1 += 1
+        dataset.append([int(row["time"]), row["entropy"], row["pc"], row["bfr"], row["shf"], row["msi"], row["used"],
+                        row["blocked"], row["ratio"]]);
+
+c = 0
+c01 = 0
+c1 = 0
+c2 = 0
+c3 = 0
+c4 = 0
+c5 = 0
+c6 = 0
+c7 = 0
+c8 = 0
+c9 = 0
+c11 = 0
+
 
 dataset = pd.DataFrame(dataset,columns=["time","entropy","pc","bfr","shf","msi","used","blocked","ratio"])
 
-train_dataset = dataset.sample(frac=0.7,random_state=0)
-test_dataset = dataset.drop(train_dataset.index)
+testDataset = []
+for index, row in newDataset.iterrows():
+    if(row['ratio'] == 0):
+        c = c + 1
+    else:
+        testDataset.append([int(row["time"]), row["entropy"], row["pc"], row["bfr"], row["shf"], row["msi"], row["used"],
+                        row["blocked"], row["ratio"]]);
+    if (row['ratio'] > 0   and row['ratio'] < 0.1):
+        c01 = c01 + 1
+    if (row['ratio'] > 0.1 and row['ratio'] < 0.2):
+        c1 = c1 + 1
+    if (row['ratio'] > 0.2 and row['ratio'] < 0.3):
+        c2 = c2 + 1
+    if (row['ratio'] > 0.3 and row['ratio'] < 0.4):
+        c3 = c3 + 1
+    if (row['ratio'] > 0.4 and row['ratio'] < 0.5):
+        c4 = c4 + 1
+    if (row['ratio'] > 0.5 and row['ratio'] < 0.6):
+        c5 = c5 + 1
+    if (row['ratio'] > 0.6 and row['ratio'] < 0.7):
+        c6 = c6 + 1
+    if (row['ratio'] > 0.7 and row['ratio'] < 0.8):
+        c7 = c7 + 1
+    if (row['ratio'] > 0.8 and row['ratio'] < 0.9):
+        c8 = c8 + 1
+    if (row['ratio'] > 0.9 and row['ratio'] < 1):
+        c9 = c9 + 1
+    if (row['ratio'] == 1):
+        c11 = c11 + 1
 
 
 
-#train_dataset = train_dataset.drop(columns=[ 'pc', 'msi'])
-#test_dataset = test_dataset.drop(columns=[ 'pc', 'msi'])
+print("--Cantidades--")
+print(c)
+print(c01)
+print(c1)
+print(c2)
+print(c3)
+print(c4)
+print(c5)
+print(c6)
+print(c7)
+print(c8)
+print(c9)
+print(c11)
+#train_dataset = dataset.sample(frac=0.7,random_state=0)
+#test_dataset = dataset.drop(train_dataset.index)
+testDataset = pd.DataFrame(dataset,columns=["time","entropy","pc","bfr","shf","msi","used","blocked","ratio"])
+
+train_dataset = dataset
+test_dataset = newDataset
+
+
+train_dataset = train_dataset.drop(columns=[ 'time'])
+test_dataset = test_dataset.drop(columns=[ 'time'])
 
 plt.figure(figsize=(8, 4))
-sns.pairplot(train_dataset[["entropy", "pc", "bfr", "shf", "msi", "used", "blocked"]], diag_kind="kde")
+sns.pairplot(train_dataset[["entropy", "bfr", "shf", "used", "blocked"]], diag_kind="kde")
 plt.show()
 
 train_stats = train_dataset.describe()
@@ -132,9 +209,12 @@ normed_test_data = norm(test_dataset)
 
 def build_model():
     model = keras.Sequential([
-        layers.Dense(64, activation='relu', input_shape=[len(train_dataset.keys())]),
-        layers.Dense(64, activation='relu'),
-        layers.Dense(64, activation='relu'),
+        layers.Dense(8, activation='relu', input_shape=[len(train_dataset.keys())]),
+        #layers.Dense(64, activation='relu'),
+        #layers.Dense(64, activation='relu'),
+        #layers.Dense(64, activation='relu'),
+        #layers.Dense(32, activation='relu'),
+        #layers.Dense(32, activation='relu'),
         layers.Dense(1)
     ])
 
