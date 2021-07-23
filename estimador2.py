@@ -28,7 +28,7 @@ for index, row in dataset.iterrows():
             ratio = demandasBloqueadas/demandasTotales
         else:
             ratio = 0
-        data.append([int(row["time"]),row["entropy"],row["pc"], row["bfr"],row["shf"],row["msi"],row["used"],demandasBloqueadas,ratio])
+        data.append([int(row["time"]),row["entropy"],row["pc"], row["bfr"],row["shf"],row["msi"],row["used"],row["blocked"],ratio])
 
 newDataset = pd.DataFrame(data,columns=["time","entropy","pc","bfr","shf","msi","used","blocked","ratio"])
 data_0 = 0
