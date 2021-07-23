@@ -288,23 +288,24 @@ plt.show()
 # _ = plt.ylabel("Count")
 #
 # plt.show()
-
-# stats = {"mean": {
-#     "entropy": train_stats["mean"]["bfr"],
-#     "pc": train_stats["mean"]["shf"],
-#     "shf": train_stats["mean"]["entropy"],
-#     "msi": train_stats["mean"]["pc"],
-#     "used": train_stats["mean"]["used"],
-#     "blocked": train_stats["mean"]["blocked"]
-# },
-# "std":{
-#     "entropy": train_stats["std"]["bfr"],
-#     "pc": train_stats["std"]["shf"],
-#     "shf": train_stats["std"]["entropy"],
-#     "msi": train_stats["std"]["pc"],
-#     "used": train_stats["std"]["used"],
-#     "blocked": train_stats["std"]["blocked"]
-# }}
+stats = {"mean": {
+    "entropy": train_stats["mean"]["entropy"],
+    "pc": train_stats["mean"]["pc"],
+    "bfr": train_stats["mean"]["bfr"],
+    "shf": train_stats["mean"]["entropy"],
+    "msi": train_stats["mean"]["msi"],
+    "used": train_stats["mean"]["used"],
+    "blocked": train_stats["mean"]["blocked"]
+},
+"std":{
+    "entropy": train_stats["std"]["entropy"],
+    "pc": train_stats["std"]["pc"],
+    "bfr": train_stats["mean"]["bfr"],
+    "shf": train_stats["std"]["shf"],
+    "msi": train_stats["std"]["msi"],
+    "used": train_stats["std"]["used"],
+    "blocked": train_stats["std"]["blocked"]
+}}
 
 
 # print(stats.__str__())
