@@ -28,9 +28,10 @@ for index, row in dataset.iterrows():
             ratio = demandasBloqueadas/demandasTotales
         else:
             ratio = 0
-        data.append([int(row["time"]),row["entropy"],row["pc"], row["bfr"],row["shf"],row["msi"],row["used"],row["blocked"],ratio])
+        data.append([int(row["time"]),row["entropy"],row["msi"], row["bfr"],row["pc"],row["used"],row["shf"],row["blocked"],ratio])
 
-newDataset = pd.DataFrame(data,columns=["time","entropy","pc","bfr","shf","msi","used","blocked","ratio"])
+newDataset = pd.DataFrame(data,columns=["time","entropy","msi","bfr","pc","used","shf","blocked","ratio"])
+newDataset = newDataset.sample(frac=1)
 data_0 = 0
 data_0_ratio = []
 data_01 = 0
@@ -63,53 +64,51 @@ for index, row in newDataset.iterrows():
     if (row["ratio"] == 0 and data_0 < lim):
         data_0_ratio.append(row["ratio"])
         data_0 += 1
-        dataset.append([int(row["time"]), row["entropy"], row["pc"], row["bfr"], row["shf"], row["msi"], row["used"],
-                        row["blocked"], row["ratio"]]);
+        dataset.append([int(row["time"]),row["entropy"],row["msi"], row["bfr"],row["pc"],row["used"],row["shf"],row["blocked"],row["ratio"]]);
     if(row["ratio"] > 0 and row["ratio"] < 0.1 and data_01 < lim and row["ratio"] not in data_01_ratio):
         data_01_ratio.append(row["ratio"])
         data_01 += 1
-        dataset.append([int(row["time"]),row["entropy"],row["pc"], row["bfr"],row["shf"],row["msi"],row["used"],row["blocked"],row["ratio"]]);
+        dataset.append([int(row["time"]),row["entropy"],row["msi"], row["bfr"],row["pc"],row["used"],row["shf"],row["blocked"],row["ratio"]]);
     if (row["ratio"] >= 0.1 and row["ratio"] < 0.2 and data_12 < lim and row["ratio"] not in data_12_ratio):
         data_12_ratio.append(row["ratio"])
         data_12 += 1
-        dataset .append([int(row["time"]),row["entropy"],row["pc"], row["bfr"],row["shf"],row["msi"],row["used"],row["blocked"],row["ratio"]]);
+        dataset .append([int(row["time"]),row["entropy"],row["msi"], row["bfr"],row["pc"],row["used"],row["shf"],row["blocked"],row["ratio"]]);
     if (row["ratio"] >= 0.2 and row["ratio"] < 0.3 and data_23 < lim and row["ratio"] not in data_23_ratio):
         data_23_ratio.append(row["ratio"])
         data_23 += 1
-        dataset.append([int(row["time"]),row["entropy"],row["pc"], row["bfr"],row["shf"],row["msi"],row["used"],row["blocked"],row["ratio"]]);
+        dataset.append([int(row["time"]),row["entropy"],row["msi"], row["bfr"],row["pc"],row["used"],row["shf"],row["blocked"],row["ratio"]]);
     if (row["ratio"] >= 0.3 and row["ratio"] < 0.4 and data_34 < lim and row["ratio"] not in data_34_ratio):
         data_34_ratio.append(row["ratio"])
         data_34 += 1
-        dataset.append([int(row["time"]),row["entropy"],row["pc"], row["bfr"],row["shf"],row["msi"],row["used"],row["blocked"],row["ratio"]]);
+        dataset.append([int(row["time"]),row["entropy"],row["msi"], row["bfr"],row["pc"],row["used"],row["shf"],row["blocked"],row["ratio"]]);
     if (row["ratio"] >= 0.4 and row["ratio"] < 0.5 and data_45 < lim and row["ratio"] not in data_45_ratio):
         data_45_ratio.append(row["ratio"])
         data_45 += 1
-        dataset.append([int(row["time"]),row["entropy"],row["pc"], row["bfr"],row["shf"],row["msi"],row["used"],row["blocked"],row["ratio"]]);
+        dataset.append([int(row["time"]),row["entropy"],row["msi"], row["bfr"],row["pc"],row["used"],row["shf"],row["blocked"],row["ratio"]]);
     if (row["ratio"] >= 0.5 and row["ratio"] < 0.6 and data_56 < lim and row["ratio"] not in data_56_ratio):
         data_56_ratio.append(row["ratio"])
         data_56 += 1
-        dataset.append([int(row["time"]),row["entropy"],row["pc"], row["bfr"],row["shf"],row["msi"],row["used"],row["blocked"],row["ratio"]]);
+        dataset.append([int(row["time"]),row["entropy"],row["msi"], row["bfr"],row["pc"],row["used"],row["shf"],row["blocked"],row["ratio"]]);
     if (row["ratio"] >= 0.6 and row["ratio"] < 0.7 and data_67 < lim and row["ratio"] not in data_67_ratio):
         data_67_ratio.append(row["ratio"])
         data_67 += 1
-        dataset.append([int(row["time"]),row["entropy"],row["pc"], row["bfr"],row["shf"],row["msi"],row["used"],row["blocked"],row["ratio"]]);
+        dataset.append([int(row["time"]),row["entropy"],row["msi"], row["bfr"],row["pc"],row["used"],row["shf"],row["blocked"],row["ratio"]]);
     if (row["ratio"] >= 0.7 and row["ratio"] < 0.8 and data_78 < lim and row["ratio"] not in data_78_ratio):
         data_78_ratio.append(row["ratio"])
         data_78 += 1
-        dataset.append([int(row["time"]),row["entropy"],row["pc"], row["bfr"],row["shf"],row["msi"],row["used"],row["blocked"],row["ratio"]]);
+        dataset.append([int(row["time"]),row["entropy"],row["msi"], row["bfr"],row["pc"],row["used"],row["shf"],row["blocked"],row["ratio"]]);
     if (row["ratio"] >= 0.8 and row["ratio"] < 0.9 and data_89 < lim and row["ratio"] not in data_89_ratio):
         data_89_ratio.append(row["ratio"])
         data_89 += 1
-        dataset.append([int(row["time"]),row["entropy"],row["pc"], row["bfr"],row["shf"],row["msi"],row["used"],row["blocked"],row["ratio"]]);
+        dataset.append([int(row["time"]),row["entropy"],row["msi"], row["bfr"],row["pc"],row["used"],row["shf"],row["blocked"],row["ratio"]]);
     if (row["ratio"] >= 0.9 and row["ratio"] < 1 and data_9 < lim and row["ratio"] not in data_9_ratio):
         data_9_ratio.append(row["ratio"])
         data_9 += 1
-        dataset.append([int(row["time"]),row["entropy"],row["pc"], row["bfr"],row["shf"],row["msi"],row["used"],row["blocked"],row["ratio"]]);
+        dataset.append([int(row["time"]),row["entropy"],row["msi"], row["bfr"],row["pc"],row["used"],row["shf"],row["blocked"],row["ratio"]]);
     if (row["ratio"] == 1 and data_1 < lim and row["ratio"] not in data_1_ratio):
         data_1_ratio.append(row["ratio"])
         data_1 += 1
-        dataset.append([int(row["time"]), row["entropy"], row["pc"], row["bfr"], row["shf"], row["msi"], row["used"],
-                        row["blocked"], row["ratio"]]);
+        dataset.append([int(row["time"]),row["entropy"],row["msi"], row["bfr"],row["pc"],row["used"],row["shf"],row["blocked"],row["ratio"]]);
 
 c = 0
 c01 = 0
@@ -125,15 +124,14 @@ c9 = 0
 c11 = 0
 
 
-dataset = pd.DataFrame(dataset,columns=["time","entropy","pc","bfr","shf","msi","used","blocked","ratio"])
+dataset = pd.DataFrame(dataset,columns=["time","entropy","msi","bfr","pc","used","shf","blocked","ratio"])
 
 testDataset = []
 for index, row in newDataset.iterrows():
     if(row['ratio'] == 0):
         c = c + 1
     else:
-        testDataset.append([int(row["time"]), row["entropy"], row["pc"], row["bfr"], row["shf"], row["msi"], row["used"],
-                        row["blocked"], row["ratio"]]);
+        testDataset.append([int(row["time"]),row["entropy"],row["msi"], row["bfr"],row["pc"],row["used"],row["shf"],row["blocked"],row["ratio"]]);
     if (row['ratio'] > 0   and row['ratio'] < 0.1):
         c01 = c01 + 1
     if (row['ratio'] > 0.1 and row['ratio'] < 0.2):
@@ -172,9 +170,10 @@ print(c7)
 print(c8)
 print(c9)
 print(c11)
+
 #train_dataset = dataset.sample(frac=0.7,random_state=0)
 #test_dataset = dataset.drop(train_dataset.index)
-testDataset = pd.DataFrame(dataset,columns=["time","entropy","pc","bfr","shf","msi","used","blocked","ratio"])
+testDataset = pd.DataFrame(dataset,columns=["time","entropy","msi","bfr","pc","used","shf","blocked","ratio"])
 
 train_dataset = dataset
 test_dataset = newDataset
@@ -300,7 +299,7 @@ stats = {"mean": {
 "std":{
     "entropy": train_stats["std"]["entropy"],
     "pc": train_stats["std"]["pc"],
-    "bfr": train_stats["mean"]["bfr"],
+    "bfr": train_stats["std"]["bfr"],
     "shf": train_stats["std"]["shf"],
     "msi": train_stats["std"]["msi"],
     "used": train_stats["std"]["used"],
@@ -310,9 +309,9 @@ stats = {"mean": {
 
 # print(stats.__str__())
 #
-# f = open("data/model/train_stats.json", "w")
-# f.write(stats.__str__())
-# f.close()
+f = open("data/model/train_stats.json", "w")
+f.write(stats.__str__())
+f.close()
 
 f = open("data/model/model.json", "w")
 f.write(model.to_json())
