@@ -172,12 +172,14 @@ print(c7)
 print(c8)
 print(c9)
 print(c11)
-#train_dataset = dataset.sample(frac=0.7,random_state=0)
-#test_dataset = dataset.drop(train_dataset.index)
+
+newDataset = newDataset.sample(frac=1)
+train_dataset = newDataset.sample(frac=0.7,random_state=0)
+test_dataset = newDataset.drop(train_dataset.index)
 testDataset = pd.DataFrame(dataset,columns=["time","entropy","pc","bfr","shf","msi","used","blocked","ratio"])
 
-train_dataset = dataset
-test_dataset = newDataset
+#train_dataset = dataset
+#test_dataset = newDataset
 
 
 train_dataset = train_dataset.drop(columns=[ 'time'])
@@ -292,7 +294,7 @@ stats = {"mean": {
     "entropy": train_stats["mean"]["entropy"],
     "pc": train_stats["mean"]["pc"],
     "bfr": train_stats["mean"]["bfr"],
-    "shf": train_stats["mean"]["entropy"],
+    "shf": train_stats["mean"]["shf"],
     "msi": train_stats["mean"]["msi"],
     "used": train_stats["mean"]["used"],
     "blocked": train_stats["mean"]["blocked"]
@@ -300,7 +302,7 @@ stats = {"mean": {
 "std":{
     "entropy": train_stats["std"]["entropy"],
     "pc": train_stats["std"]["pc"],
-    "bfr": train_stats["mean"]["bfr"],
+    "bfr": train_stats["std"]["bfr"],
     "shf": train_stats["std"]["shf"],
     "msi": train_stats["std"]["msi"],
     "used": train_stats["std"]["used"],
@@ -309,10 +311,10 @@ stats = {"mean": {
 
 
 # print(stats.__str__())
-#
-# f = open("data/model/train_stats.json", "w")
-# f.write(stats.__str__())
-# f.close()
+
+f = open("data/model/train_stats.json", "w")
+f.write(stats.__str__())
+f.close()
 
 f = open("data/model/model.json", "w")
 f.write(model.to_json())
