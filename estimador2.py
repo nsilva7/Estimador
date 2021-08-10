@@ -186,7 +186,7 @@ train_dataset = train_dataset.drop(columns=[ 'time'])
 test_dataset = test_dataset.drop(columns=[ 'time'])
 
 plt.figure(figsize=(8, 4))
-sns.pairplot(train_dataset[["entropy", "bfr", "shf", "used", "blocked"]], diag_kind="kde")
+sns.pairplot(train_dataset[["entropy", "bfr", "shf", "used", "blocked", "ratio"]], diag_kind="kde")
 plt.show()
 
 train_stats = train_dataset.describe()
@@ -211,12 +211,12 @@ normed_test_data = norm(test_dataset)
 
 def build_model():
     model = keras.Sequential([
-        layers.Dense(8, activation='relu', input_shape=[len(train_dataset.keys())]),
+        layers.Dense(64, activation='relu', input_shape=[len(train_dataset.keys())]),
         #layers.Dense(64, activation='relu'),
         #layers.Dense(64, activation='relu'),
         #layers.Dense(64, activation='relu'),
         #layers.Dense(32, activation='relu'),
-        #layers.Dense(32, activation='relu'),
+        layers.Dense(32, activation='relu'),
         layers.Dense(1)
     ])
 
