@@ -8,16 +8,21 @@ datos = pd.read_csv("data/estadisticas.csv")
 
 resultados_fijo = []
 resultados_ia = []
+resultados_me = []
 resultados = []
+#metrica_bloqueos	metrica_reruteos
 
 for index, row in datos.iterrows():
     resultados_fijo.append([row["dt_fijo_bloqueos"],row["dt_fijo_reruteos"]])
     resultados_ia.append([row["ia_bloqueos"], row["ia_reruteos"]])
+    resultados_me.append([row["metrica_bloqueos"], row["metrica_reruteos"]])
     resultados.append([row["dt_fijo_bloqueos"], row["dt_fijo_reruteos"]])
     resultados.append([row["ia_bloqueos"], row["ia_reruteos"]])
+    resultados.append([row["metrica_bloqueos"], row["metrica_reruteos"]])
 
 resultados_fijo = np.array(resultados_fijo)
 resultados_ia = np.array(resultados_ia)
+resultados_me = np.array(resultados_me)
 resultados = np.array(resultados)
 
 
@@ -58,18 +63,21 @@ pareto_front = pareto_front_df.values
 
 x_fijo = resultados_fijo[:, 1]
 y_fijo = resultados_fijo[:, 0]
-
 plt.scatter(x_fijo, y_fijo,color="r")
 
 x_ia = resultados_ia[:, 1]
 y_ia = resultados_ia[:, 0]
+plt.scatter(x_ia, y_ia, color="b")
+
+x_me = resultados_me[:, 1]
+y_me = resultados_me[:, 0]
+plt.scatter(x_me, y_me, color="g")
 
 x_pareto = pareto_front[:, 1]
 y_pareto = pareto_front[:, 0]
 
 plt.plot(x_pareto, y_pareto, color='b')
 
-plt.scatter(x_ia, y_ia, color="b")
 plt.xlabel('Reconfiguraciones')
 plt.ylabel('Bloqueos')
 plt.show()
