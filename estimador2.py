@@ -17,12 +17,12 @@ dataset = pd.read_csv("data/datos.csv")
 data = []
 print("--Calculando ratios--")
 for index, row in dataset.iterrows():
-    if(row["time"] <= 1000 ):
+    if(row["time"] <= 1200 ):
         demandasTotales = 0
         demandasBloqueadas = 0
         for i in range(10):
-            demandasTotales += row["demands"]
-            demandasBloqueadas += row["blocked"]
+            demandasTotales += dataset['demands'][index + i]
+            demandasBloqueadas += dataset['blocked'][index + i]
 
         if(demandasTotales > 0):
             ratio = demandasBloqueadas/demandasTotales
